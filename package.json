@@ -1,8 +1,8 @@
 {
-  "name": "TS-Boilerplate",
+  "name": "smart-factory",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/Hoo93/TS-Test.git",
+  "repository": "https://github.com/Hoo93/smart-factory.git",
   "author": "hoo93 <sksk8922@gmail.com>",
   "license": "MIT",
   "scripts": {},
