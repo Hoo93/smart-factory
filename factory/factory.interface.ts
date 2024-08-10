@@ -1,11 +1,4 @@
-interface FactoryOption {
-  primaryKey: PrimaryKeyOption;
-}
-
-interface PrimaryKeyOption {
-  name: string;
-  type: 'string' | 'number';
-}
+import { FactoryOption } from './types';
 
 class Factory {
   private primaryIdSet: Set<any>;
