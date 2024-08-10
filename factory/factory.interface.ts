@@ -2,6 +2,8 @@ import { FactoryOption, InstanceGeneratorFunction } from './types';
 
 export class Factory<T> {
   private primaryIdSet: Set<any>;
+  private _primaryKeyName: string;
+
   public tableName: string;
   public instanceGenerator;
 
@@ -13,6 +15,8 @@ export class Factory<T> {
     } else {
       throw new Error('Invalid primary key type');
     }
+
+    this._primaryKeyName = config.primaryKey.name;
     this.tableName = tableName;
     this.instanceGenerator = instanceGenerator;
   }
