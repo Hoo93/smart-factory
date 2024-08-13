@@ -1,69 +1,56 @@
-import { Builder } from './builder/builder'
-import { RelationType } from './contracts'
-import type {
-  DefineFactoryCallback,
-  DefineStateCallback,
-  RelationshipMeta,
-  RelationshipMetaOptions,
-} from './contracts'
+import { Builder } from './builder/builder';
+import { RelationType } from './contracts';
+import type { DefineFactoryCallback, DefineStateCallback, RelationshipMeta, RelationshipMetaOptions } from './contracts';
 
 export class FactoryModel<
   Model extends Record<string, any>,
   States extends string | null = null,
-  Relationships extends string | null = null
+  Relationships extends string | null = null,
 > {
   /**
    * Store the factory callback
    */
-  public callback: DefineFactoryCallback<Model>
+  public callback: DefineFactoryCallback<Model>;
 
   /**
    * Store each state callbacks
    */
-  public states: Record<string, DefineStateCallback<Model>> = {}
+  public states: Record<string, DefineStateCallback<Model>> = {};
 
   /**
    * Store relations metadata
    */
-  public relations: Record<string, RelationshipMeta> = {}
+  public relations: Record<string, RelationshipMeta> = {};
 
   /**
    * The SQL table name for the model.
    */
-  public tableName: string
+  public tableName: string;
 
   constructor(tableName: string, callback: DefineFactoryCallback<Model>) {
-    this.tableName = tableName
-    this.callback = callback
+    this.tableName = tableName;
+    this.callback = callback;
   }
 
-  private addRelation(
-    name: string,
-    factory: RelationshipMeta['factory'],
-    type: RelationType,
-    meta?: RelationshipMetaOptions
-  ) {
-    const foreignKey = type === RelationType.BelongsTo ? `${name}_id` : `${this.tableName}_id`
+  private addRelation(name: string, factory: RelationshipMeta['factory'], type: RelationType, meta?: RelationshipMetaOptions) {
+    const foreignKey = type === RelationType.BelongsTo ? `${name}_id` : `${this.tableName}_id`;
     this.relations[name] = {
       foreignKey,
       localKey: 'id',
       factory,
       ...meta,
       type,
-    }
+    };
 
-    return this
+    return this;
   }
 
   /**
    * Allows you to define a new state for the factory.
    */
-  public state<S extends string>(
-    name: S,
-    stateCb: DefineStateCallback<Model>
-  ): FactoryModel<Model, Extract<States | S, string>> {
-    this.states[name] = stateCb
-    return this
+  public state<S extends string>(name: S, stateCb: DefineStateCallback<Model>): FactoryModel<Model, Extract<States | S, string>> {
+    this.states[name] = stateCb;
+    return this;
   }
 
   /**
@@ -72,9 +59,9 @@ export class FactoryModel<
   public hasOne<S extends string>(
     name: S,
     cb: RelationshipMeta['factory'],
-    meta?: RelationshipMetaOptions
+    meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.HasOne, meta)
+    return this.addRelation(name, cb, RelationType.HasOne, meta);
   }
 
   /**
@@ -83,9 +70,9 @@ export class FactoryModel<
   public hasMany<S extends string>(
     name: S,
     cb: RelationshipMeta['factory'],
-    meta?: RelationshipMetaOptions
+    meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.HasMany, meta)
+    return this.addRelation(name, cb, RelationType.HasMany, meta);
   }
 
   /**
@@ -94,15 +81,15 @@ export class FactoryModel<
   public belongsTo<S extends string>(
     name: S,
     cb: RelationshipMeta['factory'],
-    meta?: RelationshipMetaOptions
+    meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.BelongsTo, meta)
+    return this.addRelation(name, cb, RelationType.BelongsTo, meta);
   }
 
   /**
    * Returns the Builder
    */
   public build(): Builder<typeof this> {
-    return new Builder(this)
+    return new Builder(this);
   }
 }
