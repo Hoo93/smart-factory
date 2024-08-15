@@ -16,6 +16,7 @@ describe('Factory Manager Test', () => {
     };
 
     // When, Then
+    // tableName 으로 unique 한 factory 를 생성한다.
     expect(() => {
       const UserFactory = defineFactory<TestInterface>('users', testCallBack());
       const AnotherUserFactory = defineFactory<TestInterface>('users', testCallBack());
