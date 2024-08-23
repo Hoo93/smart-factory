@@ -2,7 +2,7 @@ import { defineFactorifyConfig } from './config';
 import { FactoryModel } from './model';
 import type { Builder } from './builder/builder';
 import type { DefineFactoryCallback } from './contracts';
-import { FactoryManager } from './factory-manager';
+import { FactoryManager } from './manager/factory_manager';
 
 export { defineFactorifyConfig, FactoryModel, Builder };
 

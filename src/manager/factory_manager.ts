@@ -9,7 +9,6 @@ export class FactoryManager {
 
   public static getInstance(): FactoryManager {
     if (!FactoryManager.instance) {
-      console.log('getInstance has been called');
       FactoryManager.instance = new FactoryManager();
     }
     return FactoryManager.instance;
