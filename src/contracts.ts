@@ -109,7 +109,7 @@ export type RelationshipMetaOptions = Optional<Omit<RelationshipMeta, 'type' | '
 export type TableName = string;
 
 export type TableRelations = {
-  hasOne: Array<TableName>;
-  hasMany: Array<TableName>;
-  belongsTo: Array<TableName>;
+  [RelationType.BelongsTo]: Array<TableName>;
+  [RelationType.HasOne]: Array<TableName>;
+  [RelationType.HasMany]: Array<TableName>;
 };
