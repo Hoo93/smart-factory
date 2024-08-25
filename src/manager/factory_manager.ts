@@ -30,4 +30,8 @@ export class FactoryManager {
   public addRelation(tableName: string, targetTableName: string, relationType: RelationType) {
     this.relationManager.addRelation(tableName, targetTableName, relationType);
   }
+
+  public getTableRelation(tableName: string): ReturnType<RelationManager['getRelations']> {
+    return this.relationManager.getRelations(tableName);
+  }
 }
