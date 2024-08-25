@@ -1,5 +1,6 @@
 // Singleton class to manage table names
 import { RelationManager } from './relation_manager';
+import { RelationType } from '../contracts';
 
 export class FactoryManager {
   private static instance: FactoryManager;
@@ -24,5 +25,9 @@ export class FactoryManager {
     }
     this.tableNames.add(tableName);
     this.relationManager.addFactory(tableName);
+  }
+
+  public addRelation(tableName: string, targetTableName: string, relationType: RelationType) {
+    this.relationManager.addRelation(tableName, targetTableName, relationType);
   }
 }
