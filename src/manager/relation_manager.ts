@@ -30,14 +30,14 @@ export class RelationManager {
     }
 
     if (relationType === RelationType.BelongsTo) {
-      targetTable[RelationType.BelongsTo].add(tableName);
-      table[RelationType.HasMany].add(targetTableName);
+      table[RelationType.BelongsTo].add(tableName);
+      targetTable[RelationType.HasMany].add(targetTableName);
     } else if (relationType === RelationType.HasOne) {
-      targetTable[RelationType.HasOne].add(tableName);
-      table[RelationType.BelongsTo].add(targetTableName);
+      table[RelationType.HasOne].add(tableName);
+      targetTable[RelationType.BelongsTo].add(targetTableName);
     } else if (relationType === RelationType.HasMany) {
-      targetTable[RelationType.HasMany].add(tableName);
-      table[RelationType.BelongsTo].add(targetTableName);
+      table[RelationType.HasMany].add(targetTableName);
+      targetTable[RelationType.BelongsTo].add(tableName);
     }
   }
 
