@@ -26,5 +26,3 @@ export class FactoryManager {
     this.relationManager.addFactory(tableName);
   }
 }
-
-// TODO :

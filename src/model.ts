@@ -20,7 +20,7 @@ export class FactoryModel<
   /**
    * Store relations metadata
    */
-  public relations: Record<string, RelationshipMeta> = {};
+  public relations: Record<string, Omit<RelationshipMeta, 'factory'>> = {};
 
   /**
    * The SQL table name for the model.
@@ -32,12 +32,11 @@ export class FactoryModel<
     this.callback = callback;
   }
 
-  private addRelation(name: string, factory: RelationshipMeta['factory'], type: RelationType, meta?: RelationshipMetaOptions) {
+  private addRelation(name: string, type: RelationType, meta?: RelationshipMetaOptions) {
     const foreignKey = type === RelationType.BelongsTo ? `${name}_id` : `${this.tableName}_id`;
     this.relations[name] = {
       foreignKey,
       localKey: 'id',
-      factory,
       ...meta,
       type,
     };
@@ -55,35 +54,38 @@ export class FactoryModel<
 
   /**
    * Add hasOne relationship
+   *
+   * @remark FK is on the belongsTo side
    */
   public hasOne<S extends string>(
     name: S,
-    cb: RelationshipMeta['factory'],
     meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.HasOne, meta);
+    return this.addRelation(name, RelationType.HasOne, meta);
   }
 
   /**
    * Add hasMany relationship
+   *
+   * @remark FK is on the belongsTo side
    */
   public hasMany<S extends string>(
     name: S,
-    cb: RelationshipMeta['factory'],
     meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.HasMany, meta);
+    return this.addRelation(name, RelationType.HasMany, meta);
   }
 
   /**
    * Add belongsTo relationship
+   *
+   * @remark FK is always on the target table
    */
   public belongsTo<S extends string>(
     name: S,
-    cb: RelationshipMeta['factory'],
     meta?: RelationshipMetaOptions,
   ): FactoryModel<Model, States, Extract<Relationships | S, string>> {
-    return this.addRelation(name, cb, RelationType.BelongsTo, meta);
+    return this.addRelation(name, RelationType.BelongsTo, meta);
   }
 
   /**
