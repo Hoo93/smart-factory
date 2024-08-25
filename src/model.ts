@@ -1,6 +1,8 @@
-import { Builder } from './builder/builder';
+// import { Builder } from './builder/builder';
 import { RelationType } from './contracts';
 import type { DefineFactoryCallback, DefineStateCallback, RelationshipMeta, RelationshipMetaOptions } from './contracts';
+import { FactoryManager } from './manager/factory_manager';
+import { Builder } from './builder/builder';
 
 export class FactoryModel<
   Model extends Record<string, any>,
@@ -34,13 +36,15 @@ export class FactoryModel<
 
   private addRelation(name: string, type: RelationType, meta?: RelationshipMetaOptions) {
     const foreignKey = type === RelationType.BelongsTo ? `${name}_id` : `${this.tableName}_id`;
-    this.relations[name] = {
-      foreignKey,
-      localKey: 'id',
-      ...meta,
-      type,
-    };
 
+    FactoryManager.getInstance().addRelation(this.tableName, name, type);
+    // this.relations[name] = {
+    //   foreignKey,
+    //   localKey: 'id',
+    //   ...meta,
+    //   type,
+    // };
+    //
     return this;
   }
 

@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import defu from 'defu';
 import { factorifyConfig } from '../config';
 import { convertCase } from '../utils';
-import { RelationshipBuilder } from './relationship_builder';
 import { StatesManager } from './states_manager';
 import type { FactoryModel } from '../model';
 import type { FactoryExtractGeneric, WithCallback } from '../contracts';
@@ -14,11 +13,11 @@ export class Builder<
   States = FactoryExtractGeneric<Factory, 'states'>,
   Relationships = FactoryExtractGeneric<Factory, 'relationships'>,
 > {
-  private relationshipBuilder: RelationshipBuilder;
+  // private relationshipBuilder: RelationshipBuilder;
   private statesManager: StatesManager<States>;
 
   constructor(private factory: Factory) {
-    this.relationshipBuilder = new RelationshipBuilder(factory);
+    // this.relationshipBuilder = new RelationshipBuilder(factory);
     this.statesManager = new StatesManager(factory);
   }
 
@@ -93,7 +92,7 @@ export class Builder<
     this.isReset = true;
     this.mergeInput = [];
     this.statesManager.reset();
-    this.relationshipBuilder.reset();
+    // this.relationshipBuilder.reset();
 
     Object.values(this.factory.relations).forEach((relation) => {
       // const factory = relation.factory()
@@ -120,108 +119,108 @@ export class Builder<
   /**
    * Apply a relationship
    */
-  public with(name: Relationships, callback?: WithCallback): this;
-  public with(name: Relationships, count: number, callback?: WithCallback): this;
-  public with(name: Relationships, countOrCallback?: number | WithCallback, callback?: WithCallback) {
-    if (typeof countOrCallback === 'function') {
-      this.relationshipBuilder.apply(name as string, 1, countOrCallback);
-    } else {
-      this.relationshipBuilder.apply(name as string, countOrCallback || 1, callback);
-    }
-    return this;
-  }
+  // public with(name: Relationships, callback?: WithCallback): this;
+  // public with(name: Relationships, count: number, callback?: WithCallback): this;
+  // public with(name: Relationships, countOrCallback?: number | WithCallback, callback?: WithCallback) {
+  //   if (typeof countOrCallback === 'function') {
+  //     this.relationshipBuilder.apply(name as string, 1, countOrCallback);
+  //   } else {
+  //     this.relationshipBuilder.apply(name as string, countOrCallback || 1, callback);
+  //   }
+  //   return this;
+  // }
 
-  /**
-   * Create the models. Either by persisting them to the database or
-   * by returning them as a plain object.
-   */
-  private async instantiateModels(count: number, stubbed: boolean) {
-    this.isReset = false;
-    let models: Record<string, any>[] = [];
-
-    /**
-     * Generate fields for each row by calling the factory callback
-     */
-    models = Array.from({ length: count }).map(() => this.factory.callback({ faker, isStubbed: false }));
-
-    /**
-     * Apply merge attributes
-     */
-    models = this.mergeAttributes(models);
-
-    /**
-     * Apply the states
-     */
-    models = this.statesManager.applyStates(models);
-
-    /**
-     * Unwrap computed fields by calling their callbacks
-     */
-    models = await this.unwrapComputedFields(models);
-
-    /**
-     * We now create the belongsTo relationships
-     */
-    await this.relationshipBuilder.createPre(models, stubbed);
-
-    /**
-     * Insert rows
-     */
-    let result: Record<string, any>[] = [];
-
-    if (!stubbed) {
-      result = await factorifyConfig
-        .knex!.insert(convertCase(models, factorifyConfig.casing.insert))
-        .into(this.factory.tableName)
-        .returning('*');
-    } else {
-      result = models;
-    }
-
-    /**
-     * Create post relationships
-     */
-    await this.relationshipBuilder.createPost(result, stubbed);
-
-    /**
-     * Hydrate pre relationships into the result
-     */
-    const finalModels = this.relationshipBuilder.postHydrate(result);
-
-    this.reset();
-
-    return finalModels.map((model) => convertCase(model, factorifyConfig.casing.return)) as Model[];
-  }
-
-  /**
-   * Create a model without persisting it to the database.
-   */
-  public async make(): Promise<Model> {
-    const res = await this.makeMany(1);
-    return res[0]!;
-  }
-
-  /**
-   * Create models without persisting them to the database.
-   */
-  public async makeMany(count: number): Promise<Model[]> {
-    return this.instantiateModels(count, true);
-  }
-
-  /**
-   * Create a new model and persist it to the database.
-   */
-  public async create(): Promise<Model> {
-    this.ensureFactoryConnectionIsSet(factorifyConfig.knex);
-    const res = await this.createMany(1);
-    return res[0]!;
-  }
-
-  /**
-   * Create multiple models and persist them to the database.
-   */
-  public async createMany(count: number): Promise<Model[]> {
-    this.ensureFactoryConnectionIsSet(factorifyConfig.knex);
-    return this.instantiateModels(count, false);
-  }
+  // /**
+  //  * Create the models. Either by persisting them to the database or
+  //  * by returning them as a plain object.
+  //  */
+  // private async instantiateModels(count: number, stubbed: boolean) {
+  //   this.isReset = false;
+  //   let models: Record<string, any>[] = [];
+  //
+  //   /**
+  //    * Generate fields for each row by calling the factory callback
+  //    */
+  //   models = Array.from({ length: count }).map(() => this.factory.callback({ faker, isStubbed: false }));
+  //
+  //   /**
+  //    * Apply merge attributes
+  //    */
+  //   models = this.mergeAttributes(models);
+  //
+  //   /**
+  //    * Apply the states
+  //    */
+  //   models = this.statesManager.applyStates(models);
+  //
+  //   /**
+  //    * Unwrap computed fields by calling their callbacks
+  //    */
+  //   models = await this.unwrapComputedFields(models);
+  //
+  //   /**
+  //    * We now create the belongsTo relationships
+  //    */
+  //   await this.relationshipBuilder.createPre(models, stubbed);
+  //
+  //   /**
+  //    * Insert rows
+  //    */
+  //   let result: Record<string, any>[] = [];
+  //
+  //   if (!stubbed) {
+  //     result = await factorifyConfig
+  //       .knex!.insert(convertCase(models, factorifyConfig.casing.insert))
+  //       .into(this.factory.tableName)
+  //       .returning('*');
+  //   } else {
+  //     result = models;
+  //   }
+  //
+  //   /**
+  //    * Create post relationships
+  //    */
+  //   await this.relationshipBuilder.createPost(result, stubbed);
+  //
+  //   /**
+  //    * Hydrate pre relationships into the result
+  //    */
+  //   const finalModels = this.relationshipBuilder.postHydrate(result);
+  //
+  //   this.reset();
+  //
+  //   return finalModels.map((model) => convertCase(model, factorifyConfig.casing.return)) as Model[];
+  // }
+  //
+  // /**
+  //  * Create a model without persisting it to the database.
+  //  */
+  // public async make(): Promise<Model> {
+  //   const res = await this.makeMany(1);
+  //   return res[0]!;
+  // }
+  //
+  // /**
+  //  * Create models without persisting them to the database.
+  //  */
+  // public async makeMany(count: number): Promise<Model[]> {
+  //   return this.instantiateModels(count, true);
+  // }
+  //
+  // /**
+  //  * Create a new model and persist it to the database.
+  //  */
+  // public async create(): Promise<Model> {
+  //   this.ensureFactoryConnectionIsSet(factorifyConfig.knex);
+  //   const res = await this.createMany(1);
+  //   return res[0]!;
+  // }
+  //
+  // /**
+  //  * Create multiple models and persist them to the database.
+  //  */
+  // public async createMany(count: number): Promise<Model[]> {
+  //   this.ensureFactoryConnectionIsSet(factorifyConfig.knex);
+  //   return this.instantiateModels(count, false);
+  // }
 }
