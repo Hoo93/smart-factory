@@ -1,10 +1,14 @@
 // Singleton class to manage table names
+import { RelationManager } from './relation_manager';
+
 export class FactoryManager {
   private static instance: FactoryManager;
   private tableNames: Set<string>;
+  private relationManager: RelationManager;
 
   private constructor() {
     this.tableNames = new Set<string>();
+    this.relationManager = new RelationManager();
   }
 
   public static getInstance(): FactoryManager {
