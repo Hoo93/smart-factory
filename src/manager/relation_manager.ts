@@ -33,8 +33,8 @@ export class RelationManager {
       table[RelationType.BelongsTo].add(tableName);
       targetTable[RelationType.HasMany].add(targetTableName);
     } else if (relationType === RelationType.HasOne) {
-      table[RelationType.HasOne].add(tableName);
-      targetTable[RelationType.BelongsTo].add(targetTableName);
+      table[RelationType.HasOne].add(targetTableName);
+      targetTable[RelationType.BelongsTo].add(tableName);
     } else if (relationType === RelationType.HasMany) {
       table[RelationType.HasMany].add(targetTableName);
       targetTable[RelationType.BelongsTo].add(tableName);
