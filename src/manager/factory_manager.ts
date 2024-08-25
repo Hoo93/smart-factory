@@ -23,13 +23,8 @@ export class FactoryManager {
       throw new Error(`Table name "${tableName}" already exists.`);
     }
     this.tableNames.add(tableName);
-  }
-
-  public hasTableName(tableName: string): boolean {
-    return this.tableNames.has(tableName);
-  }
-
-  public removeTableName(tableName: string) {
-    this.tableNames.delete(tableName);
+    this.relationManager.addFactory(tableName);
   }
 }
+
+// TODO :

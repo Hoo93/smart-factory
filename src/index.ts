@@ -12,7 +12,6 @@ export { defineFactorifyConfig, FactoryModel, Builder };
  */
 export function defineFactory<T extends Record<string, any>>(table: string, cb: DefineFactoryCallback<T>) {
   FactoryManager.getInstance().addFactory(table);
-  RelationManager.getInstance().addFactory(table);
 
   return new FactoryModel<T>(table, cb);
 }
