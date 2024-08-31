@@ -49,4 +49,8 @@ export class RelationManager {
       table[RelationType.BelongsTo].add(targetTableName);
     }
   }
+
+  public getRelations(tableName: string): TableRelations | undefined {
+    return this._tables.get(tableName);
+  }
 }
