@@ -1,6 +1,6 @@
 // Singleton class to manage table names
 import { RelationManager } from './relation_manager';
-import { RelationType } from '../contracts';
+import { type DefineFactoryCallback, RelationType } from '../contracts';
 
 export class FactoryManager {
   private static instance: FactoryManager;
@@ -17,6 +17,10 @@ export class FactoryManager {
       FactoryManager.instance = new FactoryManager();
     }
     return FactoryManager.instance;
+  }
+
+  public defineFactory<T extends Record<string, any>>(table: string, primaryKey: string[], cb: DefineFactoryCallback<T>) {
+    return;
   }
 
   public addFactory(tableName: string) {

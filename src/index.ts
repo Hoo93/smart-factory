@@ -3,7 +3,6 @@ import { FactoryModel } from './model';
 import type { Builder } from './builder/builder';
 import type { DefineFactoryCallback } from './contracts';
 import { FactoryManager } from './manager/factory_manager';
-import { RelationManager } from './manager/relation_manager';
 
 export { defineFactorifyConfig, FactoryModel, Builder };
 
